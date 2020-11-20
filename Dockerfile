@@ -1,17 +1,12 @@
-FROM alpine:latest
+FROM melsonlai/docker-openvpn-client-socks:latest
 
 LABEL maintainer="melsonlai"
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v2.1.0.2/s6-overlay-amd64-installer /tmp/
-RUN chmod +x /tmp/s6-overlay-amd64-installer && /tmp/s6-overlay-amd64-installer /
+RUN apk add bash jq
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-      apk update && \
-      apk add dante-server openvpn openresolv
-
-COPY sockd.conf /etc/sockd.conf
-COPY services.d /etc/services.d
-RUN chmod 511 /etc/services.d/sockd/run
+COPY main.sh /root/
+RUN chmod 511 /root/main.sh
 
 ENTRYPOINT [ "/init" ]
-CMD [ "/bin/sh", "-c", "cd /root/openvpn/ && exec /usr/sbin/openvpn --config *.ovpn --script-security 2 --up /etc/openvpn/up.sh --down /etc/openvpn/down.sh" ]
+CMD [ "/root/main.sh" ]
+
