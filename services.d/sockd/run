@@ -1,6 +1,6 @@
 #!/bin/sh
 
-while [ "$(/sbin/ip link show | /usr/bin/cut -d' ' -f2 | /bin/grep -o tun)" == "" ];
+while [ "$(/sbin/ip link show | /usr/bin/cut -d' ' -f2 | /bin/grep -o ppp)" == "" ];
 do
   /bin/sleep 1
 done
