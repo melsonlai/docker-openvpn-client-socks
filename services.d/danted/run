@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while [[ -z "$(ip link show | cut -d' ' -f2 | grep -o ppp)" ]]; do
+  sleep 1
+done
+sleep 5
+
+exec /usr/sbin/danted
